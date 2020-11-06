@@ -9,12 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-// configure our database connection
-const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${ process.env.DB_PORT}/${process.env.DB_NAME}`;
-
-console.log('connectionString', connectionString);
-
-const db = pgp(connectionString);
+const db = pgp(process.env.DATABASE_URL);
 
 // declare our app variable
 const app = express();
