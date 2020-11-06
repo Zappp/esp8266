@@ -1,13 +1,14 @@
 const express = require('express');
 const logger = require('morgan');
 const helmet = require('helmet');
-const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 
 // add dotenv config
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
+
+const pgp = require('pg-promise')({ error: (error) => console.log('DB Error: ', error)});
 
 const db = pgp(process.env.DATABASE_URL);
 
@@ -23,7 +24,7 @@ app.use(bodyParser.json());
 // first endpoint
 app.get('/', async (req, res) => {
   try {
-    const sensorData = await db.query('SELECT * FROM sensor_data ORDER BY current_timestamp;');
+    const sensorData = await db.query('SELECT * FROM sensor_data;');
 
     res.status(200).send({ sensorData });
   } catch (error) {
@@ -41,12 +42,13 @@ app.post('/data', async (req, res) => {
   }
 
   try {
-    const request = await db.query(`INSERT INTO sensor_data(temperature, humidity, pressure, date) VALUES (${temperature}, ${humidity}, ${pressure}, ${new Date()});`);
+    const request = await db.query(`INSERT INTO sensor_data(temperature, humidity, pressure, date) VALUES (${temperature}, ${humidity}, ${pressure}, CURRENT_TIMESTAMP);`);
 
     if (request) {
       res.send({});
     }
   } catch (error) {
+    throw new Error(error.message);
     res.status(500).send(error);
   }
 });
