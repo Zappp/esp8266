@@ -41,7 +41,7 @@ app.post('/data', async (req, res) => {
   }
 
   try {
-    const request = await db.query(`INSERT INTO sensor_data(temperature, humidity, pressure, date) VALUES (${temperature}, ${humidity}, ${pressure}, ${Date.now()});`);
+    const request = await db.query(`INSERT INTO sensor_data(temperature, humidity, pressure, date) VALUES (${temperature}, ${humidity}, ${pressure}, ${new Date()});`);
 
     if (request) {
       res.send({});
