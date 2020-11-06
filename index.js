@@ -24,7 +24,7 @@ app.use(logger('dev'));
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-  
+
 // first endpoint
 app.get('/', async (req, res) => {
   try {
@@ -59,5 +59,6 @@ app.post('/data', async (req, res) => {
 
 // start the Express server
 const port = process.env.PORT || 3001;
+const host = process.env.HOSTNAME || 'localhost';
 
-app.listen(port, () => console.log(`Server is listening on port ${port}`));
+app.listen(port, () => console.log(`Server is listening on http://${host}:${port}`));
