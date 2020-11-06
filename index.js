@@ -47,7 +47,6 @@ app.post('/data', async (req, res) => {
       res.send({});
     }
   } catch (error) {
-    throw new Error(error.message);
     res.status(500).send(error);
   }
 });
