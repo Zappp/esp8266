@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const pgp = require('pg-promise')({ error: (error) => console.log('DB Error: ', error)});
+const pgp = require('pg-promise')({ error: error => console.log('DB Error: ', error)});
 
 const db = pgp(process.env.DATABASE_URL);
 
